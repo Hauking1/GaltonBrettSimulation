@@ -8,6 +8,7 @@ import matplotlib.animation as animation
 import random
 import time
 import Static_Object as SO
+
 """
 Smuliert ein Galtonbrett mit stößen unter den Bällen und einer Funktion zum überspringen der ersten Bilder,
 nutzt ein eigens erstelltes Modul für Vektoren sowie für objekte. Zudem wird Numba großflächig eingesetzt zur beschleunigung
