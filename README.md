@@ -1,2 +1,3 @@
 # FunWithDrawing
-I am willing to try out the pygfx and having fun with it :)
+Das ganze Projekt war ein Uni Projekt zur simulation einer Gausverteilung mittels des Galtonbrettes, dieses Funktoniert
+über die berechnung aller durchfallender Bälle :).

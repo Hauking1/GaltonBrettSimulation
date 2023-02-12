@@ -4,6 +4,7 @@ from numba.experimental import jitclass
 from numba.typed import List
 import math
 import time
+
 """
 Diese Library kann benutzt werden um einige Vektorrechnungen sehr schnell durchzuführen, zudem enthällt sie eine
 definition für eine Fundamentale (nur wenige Funktionen) Basis
