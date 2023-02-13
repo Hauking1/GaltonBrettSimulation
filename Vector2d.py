@@ -2,7 +2,6 @@
 import numba as nb
 from numba.experimental import jitclass
 from numba.typed import List
-import math
 import time
 
 """
@@ -46,7 +45,7 @@ class Vector:
     
     @property
     def length(self)-> float:
-        return math.sqrt(self.x**2+self.y**2)
+        return (self.x**2+self.y**2)**(1/2)
     
     def norm(self):
         lenge = self.length
