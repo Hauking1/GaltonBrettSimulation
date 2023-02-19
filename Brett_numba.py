@@ -82,7 +82,8 @@ def update_bars(verteilung_fast,animator):
     for zahl1,zahl in enumerate(verteilung_fast):
         verteilung[zahl1] += zahl
     for zahl,bar in enumerate(bars):
-        bar.set_height(verteilung[zahl]/count)
+        if count != 0:
+            bar.set_height(verteilung[zahl]/count)
         animator.append(bar)
 
 def update_verteilung(verteilung_fast):
