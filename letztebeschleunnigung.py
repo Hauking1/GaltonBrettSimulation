@@ -103,13 +103,13 @@ class Ball:
     pos : Vec.Vector
     speed : Vec.Vector
     index : int
-    collides_with : List
+    collides_with : nb.types.ListType(nb.types.int64)
     def __init__ (self,radius :float, initialx:float, initialy:float, index:int):
         self.radius = radius
         self.pos = Vec.Vector(initialx,initialy)
         self.speed = Vec.Vector((random.random()-0.5)*10,0.)
         self.index = index
-        self.collides_with = List()
+        self.collides_with = nb.typed.List.empty_list(nb.types.int64)
     
     def add_ball(self)->"Ball":
         return self
@@ -138,8 +138,7 @@ class Ball:
     
     #Berechnet die Stöße der Bälle untereinander, dies wird mit einer Basistransformation der Geschwindigkeiten gemacht,
     #die Orthogonal zur Stoßebene Geschwindigkeitskomponente wird getauscht, da beide Bälle die selbe Masse haben :)
-    def ball_stos(self,balls : List):
-        for bal in balls[self.index+1:]:
+    def ball_stos(self,bal : "Ball"):
             abstand_vektor = bal.pos-self.pos
             if abstand_vektor.length <= 2*self.radius:
                 if self.speed.dot(abstand_vektor)>0 or bal.speed.dot(abstand_vektor)<0:
@@ -288,6 +287,30 @@ for i in range(anzahl):
 
 alle_Artists_balls.append(text)
 
+@nb.njit(nogil = True)
+def resolve(liste_x,liste_y,balls):
+    liste_x = timesort(liste_x,fastest_sortnum)
+    liste_y = timesort(liste_y,fastest_sortnum)
+    for zahl,points in enumerate(liste_x):
+        balls[points[1]].collides_with.clear()
+        for k in liste_x[zahl:]:
+            if abs(points[0]-k[0])<=2*radius:
+                balls[points[1]].collides_with.append(k[1])
+            else:
+                break
+    for zahl,points in enumerate(liste_y):
+        for k in liste_y[zahl:]:
+            if abs(points[0]-k[0])<=2*radius:
+                balls[points[1]].collides_with.append(k[1])
+            else:
+                break
+    for bal in balls:
+        for ball in set(bal.collides_with):
+            bal.ball_stos(balls[ball])
+    
+
+    
+
 #Die Berechnung der Frames ohne Darstellung und stark beschleunigt geht alle checks durch und gibt die Verteilung aus
 @nb.njit(nogil = True)
 def update_fast(balls,delta_t,beschleunigung,hindernisspins,stosparameter,hindernis_kasten,counter,verteilung_fast,pin_abstand)->int:
@@ -305,7 +328,7 @@ def update_fast(balls,delta_t,beschleunigung,hindernisspins,stosparameter,hinder
         bal.kasten_stos(hindernis_kasten)
         liste_x.append((bal.pos[0],bal.index))
         liste_y.append((bal.pos[1],bal.index))
-        bal.ball_stos(balls)
+    resolve(liste_x,liste_y,balls)
     counter = count
     return counter,vert
 
