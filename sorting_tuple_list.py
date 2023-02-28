@@ -42,7 +42,7 @@ def merge(links, rechts):
     return ausgabe
 
 
-@nb.njit(nogil = True)
+@nb.njit(nogil = True,fastmath = True)
 def insertion_sort(eingabe, links=0, rechts=None):
     if rechts is None:
         rechts = len(eingabe) - 1
@@ -99,14 +99,13 @@ def timesort(eingabe):
 
 
 if __name__ =="__main__":
-    test = [(random.randint(0,100),random.randint(0,100)) for i in range(10000)]
+    test = [(random.randint(0,100),random.randint(0,100)) for i in range(1000)]
     test = List(test)
     start = time.time()
     for i in range(100):    
         test = timesort(test)
     print(time.time()-start)
     start = time.time()
-    for i in range(1):    
+    for i in range(100):    
         timesort(test)
     print(time.time()-start)
-    print(test)
