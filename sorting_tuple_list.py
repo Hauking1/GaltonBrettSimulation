@@ -5,6 +5,13 @@ from numba.experimental import jitclass
 from numba.typed import List
 import time
 import random
+import math
+
+def optimal(number):
+    laen = [min([abs(2**y-number/x) for y in range(0,int(math.log(number,2)))]) for x in range(32,65)]
+    laen = 32+laen.index(min(laen))
+    return laen
+
 
 @nb.njit(nogil = True)
 def merge(links, rechts):
@@ -67,7 +74,7 @@ def insertion_sort(eingabe, links=0, rechts=None):
     return eingabe
 
 @nb.njit(nogil = True)
-def timesort(eingabe):
+def timesort(eingabe,min_laenge):
     min_laenge = 32
     n = len(eingabe)
 
@@ -99,13 +106,16 @@ def timesort(eingabe):
 
 
 if __name__ =="__main__":
-    test = [(random.randint(0,100),random.randint(0,100)) for i in range(1000)]
+    laenge = 1000
+    test = [(random.randint(0,100),random.randint(0,100)) for i in range(laenge)]
     test = List(test)
+    lean = optimal(laenge)
+    print(lean)
     start = time.time()
     for i in range(100):    
-        test = timesort(test)
+        test = timesort(test,lean)
     print(time.time()-start)
     start = time.time()
     for i in range(100):    
-        timesort(test)
+        timesort(test,lean)
     print(time.time()-start)
