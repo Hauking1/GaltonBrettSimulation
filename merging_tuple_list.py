@@ -7,19 +7,48 @@ import time
 import random
 
 @nb.njit(nogil = True)
-def merge(eingabe1,eingabe2):
-    for i in eingabe2:
-        eingabe1.append(i)
-    return eingabe1
+def merge(links, rechts):
+    # wenn ein array leer ist dann gibt den anderen zurück
+    if len(links) == 0:
+        return rechts
+
+    if len(rechts) == 0:
+        return links
+
+    ausgabe = List()
+    index_links = index_rechts = 0
+
+    # geht durch beide eingaben bis alles in ausgabe
+    while len(ausgabe) < len(links) + len(rechts):
+        # sortiert die elemente
+        if links[index_links] <= rechts[index_rechts]:
+            ausgabe.append(links[index_links])
+            index_links += 1
+        else:
+            ausgabe.append(rechts[index_rechts])
+            index_rechts += 1
+
+        # wenn das ende da ist, dann eindach den rest dran packen
+        if index_rechts == len(rechts):
+            for i in links[index_links:]:
+                ausgabe.append(i)
+            break
+
+        if index_links == len(links):
+            for i in rechts[index_rechts:]:
+                ausgabe.append(i)
+            break
+
+    return ausgabe
 
 
 @nb.njit(nogil = True)
-def insertion_sort(eingabe, left=0, right=None):
-    if right is None:
-        right = len(eingabe) - 1
+def insertion_sort(eingabe, links=0, rechts=None):
+    if rechts is None:
+        rechts = len(eingabe) - 1
 
     # gehe durch die elemente
-    for i in range(left + 1, right + 1):
+    for i in range(links + 1, rechts + 1):
         # das element welches verschoben wird
         key_item = eingabe[i]
 
@@ -27,7 +56,7 @@ def insertion_sort(eingabe, left=0, right=None):
         j = i - 1
 
         # geht durch die liste und findet den tauschpartner
-        while j >= left and eingabe[j][0] > key_item[0]:
+        while j >= links and eingabe[j][0] > key_item[0]:
             # bewegt item nach rechts
             eingabe[j + 1] = eingabe[j]
             j -= 1
