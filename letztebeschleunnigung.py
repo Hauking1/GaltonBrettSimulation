@@ -13,7 +13,7 @@ from sorting_tuple_list import timesort,optimal
 """
 Smuliert ein Galtonbrett mit stößen unter den Bällen und einer Funktion zum überspringen der ersten Bilder,
 nutzt ein eigens erstelltes Modul für Vektoren sowie für objekte. Zudem wird Numba großflächig eingesetzt zur beschleunigung
-Eine Überspringung von 100000 Frames und 100 Bällen ergibt auf einen Laptop ca 6 min wartezeit
+Eine Überspringung von 100000 Frames und 100 Bällen ergibt auf einen Laptop ca 4 min wartezeit
 (ohne compilier zeit also insgesammt etwas länger), und eine Verteilung von 4000 durchgefallenen Bällen.
 """
 

@@ -75,7 +75,6 @@ def insertion_sort(eingabe, links=0, rechts=None):
 
 @nb.njit(nogil = True)
 def timesort(eingabe,min_laenge):
-    min_laenge = 32
     n = len(eingabe)
 
     #teile die liste auf
